@@ -1,22 +1,18 @@
 public class Main {
     public static void main(String[] args)
     {
-        System.out.println("task3 = " + task3(1,2,3,4));
-        System.out.println("task4 = " + task4(1,2));
-        System.out.println("task4 = " + task4(18,2));
-        task5(-1);
-        task5(1000);
-        System.out.println("task6 = " + task6(-1));
-        System.out.println("task6 = " + task6(1000));
-        task7("Мир!");
-        task8(0);
-        task8(2);
-        task8(23);
-        task8(24);
-        task8(1200);
-        task8(1400);
-        task8(1401);
-
+        findMinMax(new int[]{1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1});
+        changeValues(new int[]{1, 1, 0, 0, 1, 0, 1, 1, 0, 0});
+        fillArray(8);
+        multiplyBy2(new int[]{1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1 });
+        makeTwoDimArray(8);
+        checkBalance(new int[]{1, 1, 1, 2, 1});
+        checkBalance (new int[]{2, 1, 1, 2, 1});
+        checkBalance (new int[]{10, 10});
+        checkBalance (new int[]{2, 1, 1, 2, 1, 2, 1,2});
+        checkBalance (new int[]{2, 1, 1, 2, 1, 2, 1,2,12});
+        checkBalance (new int[]{12, 2, 1, 1, 2, 1, 2, 1,2});
+        checkBalance (new int[]{12, 2, 1, 1, 2, 1, 1, 1,2});
         System.out.println("Hello world!");
     }
 
@@ -77,5 +73,93 @@ public class Main {
     private static boolean canBeLeap(int year, int checkValue)
     {
         return year % checkValue == 0;
+    }
+
+    //TASK 2
+
+
+    private static void changeValues(int[] arr) {
+        for (int i = 0; i < arr.length; ++i) {
+            arr[i] = arr[i] == 0 ? 1 : 0;
+        }
+
+        for (int i = 0; i < arr.length; ++i) {
+            System.out.print(" " + arr[i]);
+        }
+        System.out.println(" changeValues complete");
+    }
+
+    private static void fillArray(int dim) {
+        var arr = new int[dim];
+        for (int i = 0; i < dim; ++i) {
+            arr[i] = i * 3;
+        }
+
+        for (int i = 0; i < arr.length; ++i) {
+            System.out.print(" " + arr[i]);
+        }
+        System.out.println(" fillArray complete");
+    }
+
+    private static void multiplyBy2(int[] arr) {
+        for (int i = 0; i < arr.length; ++i) {
+            if(arr[i] < 6) {
+                arr[i] *= 2;
+            }
+        }
+
+        for (int i = 0; i < arr.length; ++i) {
+            System.out.print(" " + arr[i]);
+        }
+        System.out.println(" multiplyBy2 complete");
+    }
+
+    private static void makeTwoDimArray(int dim) {
+        var arr = new int[dim][dim];
+        for (int i = 0; i < dim; ++i) {
+            arr[i][i] = 1;
+        }
+
+        for (int i = 0; i < dim; ++i) {
+            var str = "";
+            for (int j = 0; j < dim; ++j) {
+                str += " " + arr[i][j];
+            }
+            System.out.println(str);
+        }
+    }
+
+    private static void findMinMax(int[] arr) {
+        int min = arr[0], max = arr[0];
+        var arrLength = arr.length;
+        if(arrLength > 1) {
+            for (int i = 1; i < arr.length; ++i) {
+                if(min > arr[i])
+                    min = arr[i];
+                if(max < arr[i])
+                    max = arr[i];
+            }
+        }
+
+        System.out.print("min: " + min + " max: " + max);
+    }
+
+    private static void checkBalance(int[] arr) {
+        var currLeftIndex = 0;
+        var leftSum = arr[currLeftIndex ++];
+        var currRightIndex = arr.length - 1;
+        var rightSum = arr[currRightIndex];
+
+        while (currLeftIndex < currRightIndex){
+            if(leftSum <= rightSum) {
+                leftSum += arr[currLeftIndex ++];
+            }
+            else{
+                rightSum += arr[--currRightIndex];
+            }
+        }
+
+        System.out.println("leftSum: " + leftSum + " rightSum: " + rightSum + " равны: " + (leftSum == rightSum));
+        System.out.println("currLeftIndex: " + currLeftIndex + " currRightIndex: " + currRightIndex);
     }
 }
