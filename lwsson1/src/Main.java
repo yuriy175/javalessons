@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args)
     {
@@ -13,6 +15,10 @@ public class Main {
         checkBalance (new int[]{2, 1, 1, 2, 1, 2, 1,2,12});
         checkBalance (new int[]{12, 2, 1, 1, 2, 1, 2, 1,2});
         checkBalance (new int[]{12, 2, 1, 1, 2, 1, 1, 1,2});
+        shiftArray(new int[]{1, 2, 3, 4, 5,6,7,8,9,0,10}, -2);
+        shiftArray(new int[]{1, 2, 3, 4, 5,6,7,8,9,0,10}, 2);
+        shiftArray(new int[]{1, 2, 3, 4, 5,6,7,8,9,0,10}, -27);
+        shiftArray(new int[]{1, 2, 3, 4, 5,6,7,8,9,0,10}, 27);
         System.out.println("Hello world!");
     }
 
@@ -78,15 +84,19 @@ public class Main {
     //TASK 2
 
 
+    private static void printArray(int[] arr) {
+        for (int i = 0; i < arr.length; ++i) {
+            System.out.print(" " + arr[i]);
+        }
+        System.out.println("");
+    }
+
     private static void changeValues(int[] arr) {
         for (int i = 0; i < arr.length; ++i) {
             arr[i] = arr[i] == 0 ? 1 : 0;
         }
 
-        for (int i = 0; i < arr.length; ++i) {
-            System.out.print(" " + arr[i]);
-        }
-        System.out.println(" changeValues complete");
+        printArray(arr);
     }
 
     private static void fillArray(int dim) {
@@ -95,10 +105,7 @@ public class Main {
             arr[i] = i * 3;
         }
 
-        for (int i = 0; i < arr.length; ++i) {
-            System.out.print(" " + arr[i]);
-        }
-        System.out.println(" fillArray complete");
+        printArray(arr);
     }
 
     private static void multiplyBy2(int[] arr) {
@@ -108,10 +115,7 @@ public class Main {
             }
         }
 
-        for (int i = 0; i < arr.length; ++i) {
-            System.out.print(" " + arr[i]);
-        }
-        System.out.println(" multiplyBy2 complete");
+        printArray(arr);
     }
 
     private static void makeTwoDimArray(int dim) {
@@ -161,5 +165,22 @@ public class Main {
 
         System.out.println("leftSum: " + leftSum + " rightSum: " + rightSum + " равны: " + (leftSum == rightSum));
         System.out.println("currLeftIndex: " + currLeftIndex + " currRightIndex: " + currRightIndex);
+    }
+
+
+    private static void shiftArray(int[] arr, int shift) {
+        var tempIndex = shift > 0? arr.length - 1 : 0;
+        var arrIndex = shift > 0? 0 : arr.length - 1;
+        var srcInitialIndex = shift > 0? 0 : 1;
+        var dstInitialIndex = shift > 0? 1 : 0;
+        shift = Math.abs(shift % arr.length);
+
+        for(var i = 0; i < shift; ++i){
+            var temp = arr[tempIndex];
+            System.arraycopy(arr, srcInitialIndex, arr , dstInitialIndex, arr.length - 1);
+            arr[arrIndex] = temp;
+        }
+
+        printArray((arr));
     }
 }
