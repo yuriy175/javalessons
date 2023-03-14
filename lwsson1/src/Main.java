@@ -1,25 +1,70 @@
 import java.util.Arrays;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args)
     {
-        findMinMax(new int[]{1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1});
-        changeValues(new int[]{1, 1, 0, 0, 1, 0, 1, 1, 0, 0});
-        fillArray(8);
-        multiplyBy2(new int[]{1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1 });
-        makeTwoDimArray(8);
-        checkBalance(new int[]{1, 1, 1, 2, 1});
-        checkBalance (new int[]{2, 1, 1, 2, 1});
-        checkBalance (new int[]{10, 10});
-        checkBalance (new int[]{2, 1, 1, 2, 1, 2, 1,2});
-        checkBalance (new int[]{2, 1, 1, 2, 1, 2, 1,2,12});
-        checkBalance (new int[]{12, 2, 1, 1, 2, 1, 2, 1,2});
-        checkBalance (new int[]{12, 2, 1, 1, 2, 1, 1, 1,2});
-        shiftArray(new int[]{1, 2, 3, 4, 5,6,7,8,9,0,10}, -2);
-        shiftArray(new int[]{1, 2, 3, 4, 5,6,7,8,9,0,10}, 2);
-        shiftArray(new int[]{1, 2, 3, 4, 5,6,7,8,9,0,10}, -27);
-        shiftArray(new int[]{1, 2, 3, 4, 5,6,7,8,9,0,10}, 27);
+        var str = "Предложение один   Теперь предложение два   Предложение три";
+        stripBlanks(str);
+        guessWord();
+        guessNumber();
         System.out.println("Hello world!");
+    }
+
+    // task 3
+    private static void stripBlanks(String str)
+    {
+        var result = str.replaceAll("( ){2,}",". ");
+        System.out.println(result);
+    }
+
+    private static void guessWord() {
+        String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado", "broccoli", "carrot", "cherry", "garlic", "grape", "melon", "leak", "kiwi", "mango", "mushroom", "nut", "olive", "pea", "peanut", "pear", "pepper", "pineapple", "pumpkin", "potato"};
+        var actualWord = words[new Random().nextInt(words.length - 1)];
+        var resultWord = new char[actualWord.length()];
+
+        var scanner = new Scanner(System.in);
+        do {
+            System.out.print("Введите строку : ");
+            var guessedWord = scanner.next();
+            if (guessedWord.equals(actualWord)) {
+                break;
+            }
+
+            for(int i = 0; i < actualWord.length(); ++i){
+                var actualChar = actualWord.charAt(i);
+                resultWord[i] =
+                        i < guessedWord.length() && actualChar == guessedWord.charAt(i) ? actualChar : '#';
+            }
+            System.out.println("Текущий результат: #####"+new String(resultWord)+"#######");
+
+        } while (true);
+
+        System.out.println("Слово: "+actualWord+" Bye");
+    }
+
+    private static void guessNumber()
+    {
+        int exitValue = 1;
+        var scanner = new Scanner(System.in);
+        do{
+            var value = new Random().nextInt(9);
+            var guessedValue = -1;
+            var attempt = 0;
+            do{
+                System.out.print("Введите число : ");
+                guessedValue = scanner.nextInt();
+                if(guessedValue != value) {
+                    System.out.println(guessedValue < value ? "меньше" : "больше");
+                }
+            }while (++attempt < 3 && guessedValue != value);
+            System.out.println("Значение : " +value+ (guessedValue == value ? " угадано" : " не угадано"));
+            System.out.print("Повторить игру еще раз? 1 – да / 0 – нет : ");
+            exitValue = scanner.nextInt();
+        } while(exitValue != 0);
+
+        System.out.println("Bye");
     }
 
     private static void task2()
