@@ -5,8 +5,8 @@ interface Indexable{
     int nextIndex(int i, int step);
 }
 public class MainClass {
-    public static int SIZE = 3;
-    public static int DOTS_TO_WIN = 3;
+    public static int size = 3;
+    public static int dotsWin = 3;
     public static final char DOT_EMPTY = '•';
     public static final char DOT_X = 'X';
     public static final char DOT_O = 'O';
@@ -22,6 +22,7 @@ public class MainClass {
 
     public static int moveNumber = 0;
     public static void start() {
+        initGame();
         initMap();
         printMap();
         while (true) {
@@ -48,6 +49,12 @@ public class MainClass {
         }
         System.out.println("Игра закончена");
     }
+
+    public static void initGame() {
+        System.out.println("Введите параметры размер поля и количество точек для победы: ");
+        size = sc.nextInt() - 1;
+        dotsWin = sc.nextInt();
+    }
     public static boolean checkWin(int x, int y, char symb) {
         /*if(map[0][0] == symb && map[0][1] == symb && map[0][2] == symb) return true;
         if(map[1][0] == symb && map[1][1] == symb && map[1][2] == symb) return true;
@@ -60,28 +67,28 @@ public class MainClass {
         // check lefttop to rightbottom
         var sum = sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i-step, (j, step) -> j-step) +
                 sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i+step, (j, step) -> j+step) + 1;
-        if(sum == SIZE){
+        if(sum == dotsWin){
             return true;
         }
 
         // check centertop to centerbottom
         sum = sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i, (j, step) -> j-step) +
             sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i, (j, step) -> j+step) + 1;
-        if(sum == SIZE){
+        if(sum == dotsWin){
             return true;
         }
 
         // check leftbottom to righttop
         sum = sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i-step, (j, step) -> j+step) +
                 sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i+step, (j, step) -> j-step) + 1;
-        if(sum == SIZE){
+        if(sum == dotsWin){
             return true;
         }
 
         // check leftcenter to rightcenter
         sum = sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i-step, (j, step) -> j) +
                 sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i+step, (j, step) -> j) + 1;
-        if(sum == SIZE){
+        if(sum == dotsWin){
             return true;
         }
         return false;
@@ -103,13 +110,13 @@ public class MainClass {
     }
 
     public static boolean isMapFull() {
-        return moveNumber >= SIZE * SIZE;
+        return moveNumber >= size * size;
     }
     public static void aiTurn() {
         int x, y;
         do {
-            x = rand.nextInt(SIZE);
-            y = rand.nextInt(SIZE);
+            x = rand.nextInt(size);
+            y = rand.nextInt(size);
         } while (!isCellValid(x, y));
         System.out.println("Компьютер походил в точку " + (x + 1) + " " + (y + 1));
         map[y][x] = DOT_O;
@@ -130,27 +137,27 @@ public class MainClass {
         ++moveNumber;
     }
     public static boolean isCellAvailable(int x, int y) {
-        return x >= 0 && x < SIZE && y >= 0 && y < SIZE;
+        return x >= 0 && x < size && y >= 0 && y < size;
     }
     public static boolean isCellValid(int x, int y) {
         return isCellAvailable(x,y) && map[y][x] == DOT_EMPTY;
     }
     public static void initMap() {
-        map = new char[SIZE][SIZE];
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
+        map = new char[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 map[i][j] = DOT_EMPTY;
             }
         }
     }
     public static void printMap() {
-        for (int i = 0; i <= SIZE; i++) {
+        for (int i = 0; i <= size; i++) {
             System.out.print(i + " ");
         }
         System.out.println();
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = 0; i < size; i++) {
             System.out.print((i + 1) + " ");
-            for (int j = 0; j < SIZE; j++) {
+            for (int j = 0; j < size; j++) {
                 System.out.print(map[i][j] + " ");
             }
             System.out.println();
