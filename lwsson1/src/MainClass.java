@@ -22,8 +22,6 @@ public class MainClass {
 
     public static int moveNumber = 0;
 
-    //public static int[][][] qwe = { {2,3}, {2,3},{2,3},{2,3}, };
-
     public static void start() {
         initGame();
         initMap();
@@ -66,17 +64,105 @@ public class MainClass {
         // check empty cells around the last human move
         // occupy the cell if the human can win by it on his next move
 
-        var distance = size;
-        for(int y = lastHumanY - distance; y <= lastHumanY + distance; ++y){
+        // check lefttop to rightbottom
+        if(preventHumanWinBeam(lastHumanX - size, lastHumanY - size, (i, step) -> i+step, (j, step) -> j+step))
+        {
+            return true;
+        }
+
+        // check centertop to centerbottom
+        if(preventHumanWinBeam(lastHumanX, lastHumanY - size, (i, step) -> i, (j, step) -> j+step))
+        {
+            return true;
+        }
+
+        // check righttop to leftbottom
+        if(preventHumanWinBeam(lastHumanX + size, lastHumanY - size, (i, step) -> i-step, (j, step) -> j+step))
+        {
+            return true;
+        }
+
+        // check leftcenter to rightcenter
+        if(preventHumanWinBeam(lastHumanX - size, lastHumanY, (i, step) -> i+step, (j, step) -> j))
+        {
+            return true;
+        }
+       /* var distance = 2 * size;
+        // check lefttop to rightbottom
+        var x = lastHumanX - size;
+        var y = lastHumanY - size;
+        for (int i = 0; i < distance; ++i) {
+            var newX = x + i;
+            var newY = y + i;
+            if( isCellValid(newX, newY) && checkWin(newX, newY, DOT_X)) {
+                setAiTurn(newX, newY);
+                return true;
+            }
+        }
+
+        // check centertop to centerbottom
+        x = lastHumanX;
+        y = lastHumanY - size;
+        for (int i = 0; i < distance; ++i) {
+            var newY = y + i;
+            if( isCellValid(x, newY) && checkWin(x, newY, DOT_X)) {
+                setAiTurn(x, newY);
+                return true;
+            }
+        }
+
+        // check leftbottom to righttop
+        x = lastHumanX + size;
+        y = lastHumanY - size;
+        for (int i = 0; i < distance; ++i) {
+            var newX = x - i;
+            var newY = y + i;
+            if( isCellValid(newX, newY) && checkWin(newX, newY, DOT_X)) {
+                setAiTurn(newX, newY);
+                return true;
+            }
+        }
+
+        // check leftcenter to rightcenter
+        x = lastHumanX - size;
+        y = lastHumanY;
+        for (int i = 0; i < distance; ++i) {
+            var newX = x + i;
+            if( isCellValid(newX, y) && checkWin(newX, y, DOT_X)) {
+                setAiTurn(newX, y);
+                return true;
+            }
+        }
+
+
+        /*for(int y = lastHumanY - distance; y <= lastHumanY + distance; ++y){
             for(int x = lastHumanX - distance; x <= lastHumanX + distance; ++x) {
                 if( isCellValid(x, y) && checkWin(x, y, DOT_X)) {
                     setAiTurn(x, y);
                     return true;
                 }
             }
-        }
+        }*/
         return false;
     }
+
+    private static boolean preventHumanWinBeam(int x, int y, Indexable nextX, Indexable nextY) {
+        // check empty cells around the last human move
+        // occupy the cell if the human can win by it on his next move
+
+        var distance = 2 * size;
+        for (int i = 0; i < distance; ++i) {
+            var newX = nextX.nextIndex(x, i);
+            var newY = nextY.nextIndex(y, i);
+            if (isCellValid(newX, newY) && checkWin(newX, newY, DOT_X)) {
+                setAiTurn(newX, newY);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static boolean checkWin(int x, int y, char symb) {
         /*if(map[0][0] == symb && map[0][1] == symb && map[0][2] == symb) return true;
         if(map[1][0] == symb && map[1][1] == symb && map[1][2] == symb) return true;
