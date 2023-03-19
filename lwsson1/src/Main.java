@@ -5,11 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args)
     {
-        var str = "Предложение один   Теперь предложение два   Предложение три";
-        stripBlanks(str);
-        guessWord();
-        guessNumber();
-        System.out.println("Hello world!");
+        MainClass.start();
     }
 
     // task 3
