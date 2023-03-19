@@ -21,6 +21,9 @@ public class MainClass {
     public static int lastAiY = -1;
 
     public static int moveNumber = 0;
+
+    //public static int[][][] qwe = { {2,3}, {2,3},{2,3},{2,3}, };
+
     public static void start() {
         initGame();
         initMap();
@@ -36,7 +39,9 @@ public class MainClass {
                 System.out.println("Ничья");
                 break;
             }
-            aiTurn();
+            if(!preventHumanWin()){
+                aiTurn();
+            }
             printMap();
             if (checkWin(lastAiX, lastAiY, DOT_O)) {
                 System.out.println("Победил Искуственный Интеллект");
@@ -52,8 +57,25 @@ public class MainClass {
 
     public static void initGame() {
         System.out.println("Введите параметры размер поля и количество точек для победы: ");
-        size = sc.nextInt() - 1;
+        size = sc.nextInt();
         dotsWin = sc.nextInt();
+    }
+
+    private static boolean preventHumanWin()
+    {
+        // check empty cells around the last human move
+        // occupy the cell if the human can win by it on his next move
+
+        var distance = size;
+        for(int y = lastHumanY - distance; y <= lastHumanY + distance; ++y){
+            for(int x = lastHumanX - distance; x <= lastHumanX + distance; ++x) {
+                if( isCellValid(x, y) && checkWin(x, y, DOT_X)) {
+                    setAiTurn(x, y);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     public static boolean checkWin(int x, int y, char symb) {
         /*if(map[0][0] == symb && map[0][1] == symb && map[0][2] == symb) return true;
@@ -64,30 +86,33 @@ public class MainClass {
         if (map[0][2] == symb && map[1][2] == symb && map[2][2] == symb) return true;
         if (map[0][0] == symb && map[1][1] == symb && map[2][2] == symb) return true;
         if (map[2][0] == symb && map[1][1] == symb && map[0][2] == symb) return true;*/
+        var lastX = x; //symb == DOT_X ? lastHumanX : lastAiX;
+        var lastY = y; //symb == DOT_X ? lastHumanY : lastAiY;
+
         // check lefttop to rightbottom
-        var sum = sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i-step, (j, step) -> j-step) +
-                sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i+step, (j, step) -> j+step) + 1;
+        var sum = sumBeam(symb, lastX, lastY, (i, step) -> i-step, (j, step) -> j-step) +
+                sumBeam(symb, lastX, lastY, (i, step) -> i+step, (j, step) -> j+step) + 1;
         if(sum == dotsWin){
             return true;
         }
 
         // check centertop to centerbottom
-        sum = sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i, (j, step) -> j-step) +
-            sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i, (j, step) -> j+step) + 1;
+        sum = sumBeam(symb, lastX, lastY, (i, step) -> i, (j, step) -> j-step) +
+            sumBeam(symb, lastX, lastY, (i, step) -> i, (j, step) -> j+step) + 1;
         if(sum == dotsWin){
             return true;
         }
 
         // check leftbottom to righttop
-        sum = sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i-step, (j, step) -> j+step) +
-                sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i+step, (j, step) -> j-step) + 1;
+        sum = sumBeam(symb, lastX, lastY, (i, step) -> i-step, (j, step) -> j+step) +
+                sumBeam(symb, lastX, lastY, (i, step) -> i+step, (j, step) -> j-step) + 1;
         if(sum == dotsWin){
             return true;
         }
 
         // check leftcenter to rightcenter
-        sum = sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i-step, (j, step) -> j) +
-                sumBeam(symb, lastHumanX, lastHumanY, (i, step) -> i+step, (j, step) -> j) + 1;
+        sum = sumBeam(symb, lastX, lastY, (i, step) -> i-step, (j, step) -> j) +
+                sumBeam(symb, lastX, lastY, (i, step) -> i+step, (j, step) -> j) + 1;
         if(sum == dotsWin){
             return true;
         }
@@ -119,6 +144,10 @@ public class MainClass {
             y = rand.nextInt(size);
         } while (!isCellValid(x, y));
         System.out.println("Компьютер походил в точку " + (x + 1) + " " + (y + 1));
+        setAiTurn(x, y);
+    }
+
+    private static void setAiTurn(int x, int y) {
         map[y][x] = DOT_O;
         lastAiX = x;
         lastAiY = y;
