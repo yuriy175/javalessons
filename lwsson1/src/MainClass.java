@@ -87,69 +87,11 @@ public class MainClass {
         {
             return true;
         }
-       /* var distance = 2 * size;
-        // check lefttop to rightbottom
-        var x = lastHumanX - size;
-        var y = lastHumanY - size;
-        for (int i = 0; i < distance; ++i) {
-            var newX = x + i;
-            var newY = y + i;
-            if( isCellValid(newX, newY) && checkWin(newX, newY, DOT_X)) {
-                setAiTurn(newX, newY);
-                return true;
-            }
-        }
 
-        // check centertop to centerbottom
-        x = lastHumanX;
-        y = lastHumanY - size;
-        for (int i = 0; i < distance; ++i) {
-            var newY = y + i;
-            if( isCellValid(x, newY) && checkWin(x, newY, DOT_X)) {
-                setAiTurn(x, newY);
-                return true;
-            }
-        }
-
-        // check leftbottom to righttop
-        x = lastHumanX + size;
-        y = lastHumanY - size;
-        for (int i = 0; i < distance; ++i) {
-            var newX = x - i;
-            var newY = y + i;
-            if( isCellValid(newX, newY) && checkWin(newX, newY, DOT_X)) {
-                setAiTurn(newX, newY);
-                return true;
-            }
-        }
-
-        // check leftcenter to rightcenter
-        x = lastHumanX - size;
-        y = lastHumanY;
-        for (int i = 0; i < distance; ++i) {
-            var newX = x + i;
-            if( isCellValid(newX, y) && checkWin(newX, y, DOT_X)) {
-                setAiTurn(newX, y);
-                return true;
-            }
-        }
-
-
-        /*for(int y = lastHumanY - distance; y <= lastHumanY + distance; ++y){
-            for(int x = lastHumanX - distance; x <= lastHumanX + distance; ++x) {
-                if( isCellValid(x, y) && checkWin(x, y, DOT_X)) {
-                    setAiTurn(x, y);
-                    return true;
-                }
-            }
-        }*/
         return false;
     }
 
     private static boolean preventHumanWinBeam(int x, int y, Indexable nextX, Indexable nextY) {
-        // check empty cells around the last human move
-        // occupy the cell if the human can win by it on his next move
-
         var distance = 2 * size;
         for (int i = 0; i < distance; ++i) {
             var newX = nextX.nextIndex(x, i);
@@ -172,8 +114,8 @@ public class MainClass {
         if (map[0][2] == symb && map[1][2] == symb && map[2][2] == symb) return true;
         if (map[0][0] == symb && map[1][1] == symb && map[2][2] == symb) return true;
         if (map[2][0] == symb && map[1][1] == symb && map[0][2] == symb) return true;*/
-        var lastX = x; //symb == DOT_X ? lastHumanX : lastAiX;
-        var lastY = y; //symb == DOT_X ? lastHumanY : lastAiY;
+        var lastX = x;
+        var lastY = y;
 
         // check lefttop to rightbottom
         var sum = sumBeam(symb, lastX, lastY, (i, step) -> i-step, (j, step) -> j-step) +
