@@ -5,7 +5,22 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args)
     {
-        MainClass.start();
+        printEmployees();
+    }
+
+    //task 5
+    private static void printEmployees() {
+        var employees = new Employee[]{
+                new Employee("Ivanov Ivan", "Engineer", "ivivan@mailbox.com", "892312312", 30000, 30),
+                new Employee("Petrov Petr", "Engineer", "pep@mailbox.com", "892312313", 40000, 35),
+                new Employee("Sidorov Vasya", "Engineer", "siv@mailbox.com", "892312314", 50000, 41),
+                new Employee("Ezhov Senya", "Engineer", "ezs@mailbox.com", "892312315", 60000, 39),
+                new Employee("Smith John", "Engineer", "smj@mailbox.com", "892312316", 70000, 50)
+        };
+
+        Arrays.stream(employees)
+                .filter(e -> e.getAge() > 40)
+                .forEach(e -> e.print());
     }
 
     // task 3
