@@ -5,8 +5,30 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args)
     {
-        printEmployees();
+        testAnimals();
     }
+
+    // task 6
+    private static void testAnimals() {
+        var generator = new SpreadGenerator();
+        var animals = new IAnimal[]{
+                new Cat("Barsik", generator),
+                new Cat("Murzik", generator),
+                new Cat("Vaska", generator),
+                new Dog("Tuzik", generator),
+                new Dog("Bobik", generator),
+                new Dog("Druzhok", generator),
+        };
+
+        Arrays.stream(animals)
+                .forEach(e ->
+                        {
+                            e.jump(200);
+                            e.run(200);
+                            e.swim(10);
+                        });
+    }
+
 
     //task 5
     private static void printEmployees() {
