@@ -6,7 +6,11 @@ interface IAnimal {
     void jump(int value);
 }
 
-abstract class Animal implements IAnimal{
+interface ISpreadGenerator {
+    int generateFrom(int limit);
+}
+
+abstract class Animal{
     private String name = "";
 
     public Animal(String name){
@@ -18,7 +22,7 @@ abstract class Animal implements IAnimal{
     }
 }
 
-class Cat extends Animal{
+class Cat extends Animal implements IAnimal{
     //(бег: кот 200 м., собака 500 м.; прыжок: кот 2 м., собака 0.5 м.; плавание: кот не умеет плавать, собака 10 м.).
     private final static int RunLimit = 200;
     private final static int JumpLimit = 200;
@@ -26,7 +30,7 @@ class Cat extends Animal{
     private int runLimit = 0;
     private int jumpLimit = 0;
 
-    public Cat(String name, SpreadGenerator generator) {
+    public Cat(String name, ISpreadGenerator generator) {
         super(name);
         runLimit = generator.generateFrom(RunLimit);
         jumpLimit = generator.generateFrom(JumpLimit);
@@ -51,7 +55,7 @@ class Cat extends Animal{
     }
 }
 
-class Dog extends Animal{
+class Dog extends Animal implements IAnimal{
     //(бег: кот 200 м., собака 500 м.; прыжок: кот 2 м., собака 0.5 м.; плавание: кот не умеет плавать, собака 10 м.).
     private final static int RunLimit = 500;
     private final static int JumpLimit = 50;
@@ -61,7 +65,7 @@ class Dog extends Animal{
     private int jumpLimit = 0;
     private int swimLimit = 0;
 
-    public Dog(String name, SpreadGenerator generator) {
+    public Dog(String name, ISpreadGenerator generator) {
         super(name);
         runLimit = generator.generateFrom(RunLimit);
         jumpLimit = generator.generateFrom(JumpLimit);
@@ -87,9 +91,9 @@ class Dog extends Animal{
     }
 }
 
-class SpreadGenerator
+class SpreadGenerator implements ISpreadGenerator
 {
-    int generateFrom(int limit){
+    public int generateFrom(int limit){
         var bound = Math.round((float)(limit * 0.2));
         return limit - bound + new Random().nextInt(2*bound);
     }
